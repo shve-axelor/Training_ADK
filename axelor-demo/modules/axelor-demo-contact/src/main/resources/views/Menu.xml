@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+	<menuitem name="menu-employee-book" title="Employee Book" />
+
+	<menuitem name="menu-employee-all" parent="menu-employee-book" title="All Employees"
+		action="employee.all" />
+
+	<menuitem title="My Project Employees" parent="menu-employee-book"
+		name="menu-employee-specificproject" action="employee.project" tag-style="warning" />
+
+	<menuitem title="Quotations" parent="menu-employee-book"
+		name="menu-employee-quotation" action="employee.quotation" />
+
+	<menuitem name="menu-employee-department" parent="menu-employee-book"
+		title="All Departments" action="department.all" />
+
+	<menuitem name="menu-employee-project" parent="menu-employee-book" title="All Projects"
+		action="project.all" />
+
+	<menuitem name="menu-employee-calendar" parent="menu-employee-book" title="Calendar view"
+		action="calendar.all" />
+
+	<menuitem name="menu-employee-kanban" parent="menu-employee-book" title="Kanban view"
+		action="kanban.all" />
+		
+	<action-view name="employee.quotation" title="Quotations" model="com.axelor.contact.db.Quotation">
+		<view type="form" name="employee-quotation-form"/>
+	</action-view>	
+		
+	<action-view name="employee.project" title="ProjectEmployees" model="com.axelor.contact.db.Employee">
+		<view type="grid" name="employee-grid" />
+		<view type="form" name="employee-form" />
+		<domain>self.projectSet[].projectName = :project_name</domain>
+		<context name="project_name" expr="abc"/>
+	</action-view>	
+
+	<action-view name="employee.all" title="Employees"
+		model="com.axelor.contact.db.Employee">
+		<view type="grid" name="employee-grid" />
+		<view type="form" name="employee-form" />
+		<view type="cards" name="employee-cards" />
+		<context name="json-enhance" expr="true" />
+	</action-view>
+
+	<action-view name="department.all" title="Departments"
+		model="com.axelor.contact.db.Department">
+		<view type="grid" name="department-grid" />
+		<view type="form" name="department-form" />
+	</action-view>
+
+	<action-view name="project.all" title="Projects" model="com.axelor.contact.db.Project">
+		<view type="grid" name="project-grid" />
+		<view type="form" name="project-form" />
+	</action-view>
+
+	<action-view name="calendar.all" title="ProjectTasks"
+		model="com.axelor.contact.db.Employee">
+		<view type="calendar" name="project-task-calendar-my" />
+	</action-view>
+
+	<action-view name="kanban.all" title="KanbanView"
+		model="com.axelor.contact.db.Employee">
+		<view type="kanban" name="project-task-kanban" />
+		<view type="form" name="employee-form" />
+	</action-view>
+
+
+</object-views>

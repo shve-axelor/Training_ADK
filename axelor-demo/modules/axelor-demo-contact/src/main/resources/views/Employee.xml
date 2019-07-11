@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+	<grid model="com.axelor.contact.db.Employee" title="Employees" name="employee-grid" editable="true">
+		<toolbar>
+			<button name="btnPrint" title="Print" showTitle="false" onClick="print.employee.all"
+				icon="fa-print" />
+		</toolbar>
+		<menubar>
+			<menu title="Actions">
+				<item title="Action 1" action="action.some" />
+				<item title="Action 2" action="action.thing" />
+			</menu>
+		</menubar>
+		<field name="firstName" />
+		<field name="lastName" />
+		<field name="dateOfBirth" />
+		<field name="phone" />
+		<field name="email">
+			<hilite if="$contains(email, 'gmeil.com')" background="warning" />
+		</field>
+		<field name="addharNumber" />
+		<field name="addressList.street" />
+		<field name="department" />
+		<field name="projectSet.projectName" />
+	</grid>
+
+	<form model="com.axelor.contact.db.Employee" onNew="action-contact-department" onSave="action-validate"
+		title="Employee" name="employee-form">
+		<panel-tabs readonly="true">
+			<panel-related field="addressList" title="Information" />
+			<panel name="NotePanel" title="Notes">
+				<!-- widgets -->
+				<field name="NotePanel" showTitle="false" colSpan="12" />
+			</panel>
+		</panel-tabs>
+		<!-- <panel-stack readonly="true"> <panel hideIf="$contains(firstName, 'parth')" title="Page 1" /> 
+			<panel title="Page 2" /> <panel title="Page 3" /> </panel-stack> -->
+		<panel title="Personal" css="panel-green">
+			<field name="firstName" />
+			<field name="lastName" />
+			<field name="dateOfBirth" widget="date" />
+			<field name="phone" widget="phone" />
+			<field name="email" widGet="email" />
+			<field name="addharNumber" widget="phone" />
+			<field name="addressList" colSpan="12" css="address-list">
+				<viewer><![CDATA[
+        <address>
+        {{record.street}} {{record.area}}<br>
+        {{record.city}}, {{record.state}} - {{record.zip}}
+        </address>
+        ]]>
+        </viewer>
+				<editor x-show-titles="false">
+					<field name="street" colSpan="12" />
+					<field name="area" colSpan="12" />
+					<field name="city" colSpan="4" />
+					<field name="state" colSpan="4" />
+					<field name="zip" colSpan="4" />
+				</editor>
+			</field>
+		</panel>
+		<panel title="ProjectDetails">
+			<field name="note" colSpan="12" />
+		</panel>
+		<panel title="Extra" sidebar="true">
+			<field name="department" widGet="SuggestBox" colSpan="12" required="true" />
+			<field name="projectSet" widget="TagSelect" onChange="action-contact-project-note"
+				required="true" />
+		</panel>
+		<panel name="projectInfoPanel" title="ProjectInfo" sidebar="true">
+			<field name="confirmed" widget="boolean-switch" onChange="com.axelor.contact.web.HelloController:onConfirm" />
+			<field name="startDate" onChange="project.on-startdate,action-contact-projectdate-validate" />
+			<field name="endDate" />
+			<field name="status" />
+			<field name="progress" />
+		</panel>
+
+	</form>
+
+
+
+	<cards name="employee-cards" model="com.axelor.contact.db.Employee" title="Employees"
+		orderBy="firstName">
+		<field name="firstName" />
+		<field name="lastName" />
+		<field name="phone" />
+		<field name="email" />
+		<field name="address" />
+		<template><![CDATA[
+			<div class="span8">
+				<strong style="text-transform: uppercase;">{{firstName}}&nbsp;&nbsp;{{lastName}}</strong><br><br>
+				<address>
+				<strong>{{address.street}} {{address.area}}</strong><br>
+				{{address.city}}<span ng-if="address.state">,{{address.state}}</span><span ng-if="address.zip"> - {{address.zip}}</span><br><br>
+				 	<abbr ng-if="phone" title="Phone">P:</abbr> {{phone}}<br><br>
+      		<abbr ng-if="email" title="Email">E:</abbr> {{email}}<br>
+				</address>
+				<button type="button" class="btn" ui-action-click="department.all">Department</button>
+			</div>
+		]]>
+		</template>
+	</cards>
+
+	<action-attrs name="project.on-startdate">
+		<attribute name="readonly" for="endDate" expr="startDate" />
+	</action-attrs>
+
+	<action-attrs name="action-contact-department">
+		<attribute name="domain" for="department" expr="eval: &quot; self.technicalStaff = True &quot;" />
+	</action-attrs>
+
+	<action-method name="action-contact-project-note">
+		<call class="com.axelor.contact.web.HelloController" method="note" />
+	</action-method>
+
+	<action-validate name="action-contact-projectdate-validate">
+		<error message="Start Date is either today's date or future date." if="startDate &lt; __date__" />
+	</action-validate>
+
+	<action-condition name="check-project-dates">
+		<check field="startDate" />
+		<check field="endDate" />
+		<check field="endDate" if="startDate &gt; endDate" error="EndDate is in the future." />
+	</action-condition>
+
+	<action-group name="action-validate">
+		<action name="action-contact-project-note" />
+		<action name="check-project-dates" />
+	</action-group>
+
+	<action-report name="print.employee.all"
+    design="test.rptdesign"
+    output="so-${date}${time}"
+    format="pdf">
+<!--     <param name="orderId" expr="eval: id"/> -->
+  </action-report>
+
+</object-views>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.0.xsd">
+
+	<module package="com.axelor.contact.db" name="contact" />
+
+	<enum name="ProjectStatus">
+		<item name="TODO" title="To-Do" value="todo"/>
+		<item name="INPROGRESS" title="In Progress" value="Progress" />
+		<item name="COMPLETED" title="Completed" value="complete"/>
+	</enum>
+	
+	<entity name="Employee">
+		<string name="firstName" namecolumn="true" />
+		<string name="lastName" />
+		<date name="dateOfBirth" />
+		<enum name="status" ref="ProjectStatus" />
+		<string name="email" />
+		<string name="phone" />
+		<string name="addharNumber" />
+		<date name="startDate" />
+		<date name="endDate" />
+		<integer name="progress" />
+		<string name="note"  multiline="true" />
+		
+		<one-to-many name="addressList" ref="com.axelor.contact.db.Address" mappedBy="employee" title="Address"/>
+		<many-to-one name="department" ref="com.axelor.contact.db.Department" title="Departments"/>
+		<many-to-many name="projectSet" ref="com.axelor.contact.db.Project" title="Projects"  />
+	</entity>
+
+</domain-models>

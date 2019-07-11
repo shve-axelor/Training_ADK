@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+	<form model="com.axelor.contact.db.Quotation" title="Quotations" name="employee-quotation-form">
+		<panel title="EmployeeDetails">
+			<field name="employee" form-view="employee-form" grid-view="employee-grid" />
+			<field name="employee.email" />
+			<field name="employee.phone" />
+			<field name="employee.dateOfBirth" />
+		</panel>
+		<panel>
+			<panel colSpan="4" itemSpan="12">
+				<button name="totalAmount" onClick="action-calculate" title="Total amount" icon="fa-bar-chart" widget="info-button"
+					css="btn-primary" />
+			</panel>
+			<panel colSpan="8" css="order-subtotal" readonly="true">
+				<field name="totalAmount" showTitle="false" colSpan="12">
+					<viewer depends="amount,taxAmount"><![CDATA[
+          <dl class="dl-horizontal">
+            <dt class="order-subtotal-total" x-translate>Total amount</dt>
+            <dd class="order-subtotal-total">{{record.totalAmount}}</dd>
+          </dl>
+          ]]></viewer>
+				</field>
+			</panel>
+		</panel>
+	</form>
+	
+	<action-method name="action-calculate">
+		<call class="com.axelor.contact.web.HelloController" method="calculate"/>
+	</action-method>
+	
+</object-views>

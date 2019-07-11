@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.0.xsd">
+
+	<module package="com.axelor.contact.db" name="contact" />
+
+	<entity name="Project">
+		<string name="projectName" namecolumn="true" />
+		<string name="projectHead" />
+		<integer name="projectPrice" min="100" max="20000" />
+		<many-to-many name="employeeList" ref="com.axelor.contact.db.Employee" mappedBy="projectSet"/>
+	</entity>
+
+</domain-models>

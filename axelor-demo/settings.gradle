@@ -1,0 +1,4 @@
+rootProject.name = 'axelor-demo'
+
+include "modules:axelor-demo-contact"
+

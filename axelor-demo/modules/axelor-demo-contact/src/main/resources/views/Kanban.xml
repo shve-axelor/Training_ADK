@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+	<kanban name="project-task-kanban" title="Project Tasks"
+		model="com.axelor.contact.db.Employee" columnBy="status" sequenceBy="progress"
+		onNew="project.task.kanban.on.new" limit="10">
+		<field name="firstName" />
+		<field name="note" />
+		<field name="progress" />
+		<field name="startDate" />
+		<field name="endDate" />
+		<hilite color="danger" if="progress == 0" />
+		<hilite color="success" if="progress == 100" />
+		<hilite color="info" if="progress &gt;= 50" />
+		<hilite color="warning" if="progress &gt; 0" />
+		<template><![CDATA[
+  <h4>{{firstName}}</h4>
+  <div class="card-body">{{note}}</div>
+  <div class="card-footer">
+    <i class='fa fa-clock-o'></i> <span>{{startDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  </div>
+  ]]></template>
+	</kanban>
+
+	<action-record name="project.task.kanban.on.new"
+		model="com.axelor.contact.db.Employee">
+		<field name="note" expr="#{_value}" />
+		<field name="firstName" expr="#{__user__.name}" />
+		<field name="startDate" expr="#{__date__}" />
+		<field name="endDate" expr="#{__time__.plusHours(1)}" />
+		<field name="progress" expr="2" />
+<!-- 		<field name="count" expr="1002"/> -->
+	</action-record>
+
+</object-views>

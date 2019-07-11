@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  
+  <grid model="com.axelor.contact.db.Department" title="Departments" name="department-grid">
+  	<field name="departmentNumber"></field>
+		<field name="departmentName" />
+	</grid>
+
+	<form model="com.axelor.contact.db.Department" title="Departments" name="department-form">
+		<panel title="Department" css="panel-red">
+			<field name="departmentNumber" />
+			<field name="departmentName" />
+			<field name="technicalStaff" title="Technical" widGet="boolean-switch" />
+		</panel>
+		 <panel-related field="employees" colSpan="12">
+      <field name="firstName"/>
+      <field name="lastName"/>
+      <field name="email" />
+      <field name="phone"/>
+      <field name="dateOfBirth"/>
+    </panel-related>
+	</form>
+  
+  
+  </object-views>
